@@ -55,9 +55,54 @@ app.post("/jobs",async (req,res)=>{
     }
 })
 
+////////Get single job id api /////
+async function getJobById (id){
+    try{
+    const job =await jobRouter.findById(id);
+    return job;
+    }catch(error){
+        throw error;
+    }
+}
+app.get("/jobs/:jobId",async(req,res)=>{
+    try{
+    const jobId = await getJobById(req.params.jobId);
+    if(!jobId){
+        res.status(404).json({message:"Job not found"})
+    }else{
+        res.status(200).json({job:jobId})
+    }
+    }catch(error){
+        res.status(500).json({error:"Internal Server error"})
+    }
+})
+
+///////delete job api/////////
+async function deleteJobById(id){
+    try{
+   const deletedJob =await jobRouter.findByIdAndDelete(id);
+   return deletedJob;
+    }catch(error){
+        throw error;
+    }
+}
+app.delete("/jobs/:jobId",async(req,res)=>{
+    try{
+   const deletedJob =await deleteJobById(req.params.jobId);
+   if(!deletedJob){
+    res.status(404).json({message:"Job not found"})
+   }else{
+    res.status(200).json({message:"Job deleted successfully",job:deletedJob})
+   }
+    }catch(error){
+        res.status(500).json({error:"Internal Server error"})
+    }
+})
+
 app.get("/",(req,res)=>{
     res.send("Job portal backend is running")
 });
+
 
 const PORT =process.env.PORT || 3000;
 
