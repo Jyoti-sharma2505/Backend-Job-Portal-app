@@ -44,11 +44,11 @@ async function createJob (JObData){
 }
 app.post("/jobs",async (req,res)=>{
     try{
-     const jobData = createJob(req.body);
-     if(!jobData.title || !jobData.companyName || !jobData.location || !jobData.salary || !jobData.jobType || !jobData.description ||!jobData.qualification){
-        res.status(400).json({error:"All fields are required"})
-     }else {
-        res.status(201).json({jobData:"job created successfylly",jobData:jobData})
+     const jobData = await createJob(req.body);
+     if(jobData){
+        res.status(201).json({message:"job created successfully",job:jobData})
+     }else{
+        res.status(400).json({message:"Failed to create job"})
      }
     }catch(error){
         res.status(500).json({error:"Internal Server Error"});
