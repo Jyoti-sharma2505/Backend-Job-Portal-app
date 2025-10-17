@@ -27,7 +27,7 @@ const JObSchema =new mongoose.Schema({
         required:true,
     },
     qualification:{
-        type:String,
+        type:[String],
         required:true,
     }
 },{timestamps:true});
